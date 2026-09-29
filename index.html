@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UniPath</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fbf9f5; --ink:#20180f; --tan:#b8977a; --tan-dark:#9c7c5e;
+    --teal:#4fc9c0; --gold:#d99a2b; --line:rgba(32,24,15,.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{font-family:'Sarabun',sans-serif;color:var(--ink);background:var(--cream);
+    padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  h1,h2,h3,.brand,.nav a{font-family:'Kanit',sans-serif;}
+
+  header{position:sticky;top:0;z-index:10;top:env(safe-area-inset-top,0px);
+    background:var(--cream);border-bottom:2px solid var(--gold);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 24px;flex-wrap:wrap;gap:10px;}
+  .brand{font-size:1.5rem;font-weight:700;display:flex;align-items:center;gap:8px;cursor:pointer;}
+  .nav{display:flex;gap:22px;flex-wrap:wrap;}
+  .nav a{text-decoration:none;color:var(--ink);font-size:1rem;cursor:pointer;padding:4px 2px;
+    border-bottom:2px solid transparent;}
+  .nav a.active{border-color:var(--gold);}
+  .beta{font-family:'Kanit',sans-serif;font-weight:700;font-size:1.1rem;}
+
+  main{max-width:1100px;margin:0 auto;padding:0 20px 60px;}
+  .view{display:none;} .view.active{display:block;}
+
+  /* HOME */
+  .hero{margin:0 -20px 34px;padding:70px 20px 90px;
+    background:linear-gradient(115deg,#0c0904 0%,#3a2a12 45%,var(--gold) 100%);
+    color:#fff;text-align:center;position:relative;overflow:hidden;}
+  .hero h1{font-size:clamp(2rem,5vw,3.4rem);margin:0;font-weight:700;
+    background:linear-gradient(90deg,#d9f5ec,#bcd4ff);-webkit-background-clip:text;
+    background-clip:text;color:transparent;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;
+    margin-top:-60px;position:relative;z-index:2;}
+  .card{background:var(--tan);color:#fff;border-radius:18px;padding:22px;min-height:190px;
+    cursor:pointer;transition:transform .15s ease;}
+  .card:hover{transform:translateY(-4px);}
+  .card h3{margin:6px 0 10px;font-size:1.3rem;}
+  .card p{margin:0;line-height:1.5;font-size:.95rem;}
+
+  /* SECTION HEADER */
+  .back{display:flex;align-items:center;gap:10px;font-family:'Kanit',sans-serif;
+    font-size:1.5rem;font-weight:600;margin:26px 0 20px;cursor:pointer;}
+  .note{color:#d1471f;font-weight:600;text-align:right;margin-bottom:10px;font-size:.9rem;}
+
+  /* PLAN */
+  .plan-box{background:#fff;border-radius:18px;padding:26px;box-shadow:0 1px 0 var(--line);}
+  .plan-row{display:flex;gap:16px;align-items:center;margin-bottom:22px;flex-wrap:wrap;}
+  .plan-row .label{width:70px;font-family:'Kanit',sans-serif;font-weight:600;flex-shrink:0;}
+  .plan-row select{flex:1;min-width:130px;padding:10px 12px;border-radius:20px;border:none;
+    background:#7d7d7d;color:#fff;font-family:'Sarabun',sans-serif;font-size:.9rem;}
+  .plan-row select:disabled{opacity:.5;}
+  .save-btn{display:block;margin:10px auto 0;background:var(--gold);color:#20180f;
+    border:none;border-radius:22px;padding:10px 26px;font-family:'Kanit',sans-serif;
+    font-weight:600;cursor:pointer;}
+  .saved-msg{text-align:center;color:#2f8a5b;font-weight:600;margin-top:10px;min-height:1.2em;}
+
+  /* FIND YOURSELF */
+  .fy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+  .fy-card{background:var(--tan);border-radius:18px;padding:22px;color:#fff;}
+  .fy-icon{font-size:2rem;text-align:center;margin-bottom:8px;}
+  .fy-card h3{text-align:center;margin:0 0 14px;font-size:1.15rem;}
+  .fy-card label{display:block;font-size:.85rem;margin:10px 0 4px;opacity:.95;}
+  .fy-card textarea{width:100%;border-radius:10px;border:none;padding:8px 10px;
+    font-family:'Sarabun',sans-serif;font-size:.9rem;resize:vertical;min-height:44px;}
+
+  /* ABOUT */
+  .about-box{background:#fff;border-radius:18px;display:flex;gap:0;overflow:hidden;
+    box-shadow:0 1px 0 var(--line);flex-wrap:wrap;}
+  .about-img{flex:1;min-width:240px;display:flex;align-items:center;justify-content:center;
+    padding:30px;}
+  .about-img label{width:220px;height:220px;border-radius:50%;
+    background:linear-gradient(180deg,#cfe8ff 0%,#eaf5e0 55%,#8fbf5f 100%);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;
+    border:2px dashed rgba(0,0,0,.2);color:#2a2a2a;font-family:'Kanit',sans-serif;
+    font-size:.9rem;text-align:center;}
+  .about-img img{width:100%;height:100%;object-fit:cover;}
+  .about-text{flex:1.4;min-width:260px;padding:30px;border-left:1px solid var(--line);}
+  .about-text h3{margin-top:0;}
+  .about-text p{line-height:1.7;font-size:.98rem;}
+
+  @media(prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){--cream:#1a1712;--ink:#f2ede4;}
+    :root:not([data-theme="light"]) .plan-box,
+    :root:not([data-theme="light"]) .about-box{background:#26221b;}
+    :root:not([data-theme="light"]) .about-text{border-color:rgba(255,255,255,.1);}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand" onclick="showView('home')">📚 UniPath</div>
+  <nav class="nav">
+    <a onclick="showView('plan')" data-view="plan">แผน</a>
+    <a onclick="showView('findself')" data-view="findself">ค้นหาตัวเอง</a>
+    <a onclick="showView('about')" data-view="about">รู้จักเรา</a>
+  </nav>
+  <div class="beta">Beta</div>
+</header>
+
+<main>
+  <!-- HOME -->
+  <section id="home" class="view active">
+    <div class="hero"><h1>Keep Learning for Your Dream</h1></div>
+    <div class="cards">
+      <div class="card" onclick="showView('plan')"><h3>แผน</h3><p>จัดตั้งตารางเรียนในแต่ละวันแบบมีประสิทธิภาพ</p></div>
+      <div class="card" onclick="showView('findself')"><h3>ค้นหาตัวตน</h3><p>ถ้าเราสงสัยว่าอยากเป็นอะไร ให้คุณลองตอบสิ่งในนี้ดูนะ</p></div>
+      <div class="card" onclick="showView('about')"><h3>รู้จักเรา</h3><p>รู้จักคนสร้าง UniPath และแนวคิดเบื้องหลังเว็บนี้</p></div>
+    </div>
+  </section>
+
+  <!-- PLAN -->
+  <section id="plan" class="view">
+    <div class="back" onclick="showView('home')">◀ แผน</div>
+    <div class="note">*อย่าลืมแคปหน้าจอด้วยนะ</div>
+    <div class="plan-box">
+      <div class="plan-row" id="row-time"><span class="label">เวลา</span></div>
+      <div class="plan-row" id="row-subject"><span class="label">วิชา</span></div>
+      <div class="plan-row" id="row-topic"><span class="label">เรื่อง</span></div>
+      <button class="save-btn" onclick="savePlan()">บันทึกแผน</button>
+      <div class="saved-msg" id="planSavedMsg"></div>
+    </div>
+  </section>
+
+  <!-- FIND YOURSELF -->
+  <section id="findself" class="view">
+    <div class="back" onclick="showView('home')">◀ ค้นหาตัวเอง</div>
+    <div class="fy-grid" id="fyGrid"></div>
+    <button class="save-btn" onclick="saveFindSelf()">บันทึกคำตอบ</button>
+    <div class="saved-msg" id="fySavedMsg"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="view">
+    <div class="back" onclick="showView('home')">◀ รู้จักเรา</div>
+    <div class="about-box">
+      <div class="about-img">
+        <label id="aboutImgLabel">คลิกเพื่อใส่รูป
+          <input type="file" accept="image/*" style="display:none" onchange="loadAboutImg(event)">
+        </label>
+      </div>
+      <div class="about-text">
+        <h3>สวัสดีครับ จากคนสร้าง</h3>
+        <p>เว็บนี้ผมสร้างขึ้นเพื่อนักเรียนที่กำลังสอบเข้ามหาลัยในฝันของตัวเองที่มีปัญหาว่า "เอ๋ เราจะเริ่มยังไงดีนะ"</p>
+        <p>ทำให้ผมได้สร้างเว็บ UniPath ขึ้นมาเพื่อช่วยเกี่ยวกับปัญหาที่ผมกล่าวเมื่อข้างต้น หวังว่าทุก ๆ คนจะได้มหาลัยตามที่หวัง และหวังว่าเว็บนี้จะมีส่วนช่วยทุกคนในการวางแผนการเรียนไม่มากก็น้อย ขอบคุณมาก ๆ ครับ</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const SUBJECTS = {
+  "คณิตศาสตร์": ["เซตและตรรกศาสตร์","จำนวนจริงและพหุนาม","ฟังก์ชันและกราฟ","ตรีโกณมิติ","เมทริกซ์และเวกเตอร์","ลำดับและอนุกรม","ความน่าจะเป็นและสถิติ","แคลคูลัสเบื้องต้น"],
+  "วิทยาศาสตร์": ["แรงและการเคลื่อนที่","พลังงานและงาน","ไฟฟ้าและแม่เหล็ก","คลื่นและเสียง","สารและปฏิกิริยาเคมี","เซลล์และสิ่งมีชีวิต","พันธุกรรมและวิวัฒนาการ","โลกและอวกาศ"],
+  "ภาษาอังกฤษ": ["Grammar โครงสร้างประโยค","คำศัพท์ (Vocabulary)","การอ่านจับใจความ","การเขียน (Writing)","Tenses","บทสนทนา (Conversation)","การฟัง (Listening)","สำนวนที่ใช้บ่อย"]
+};
+const TIMES = ["07:00-08:00","08:00-09:30","09:30-11:00","11:00-12:30","13:30-15:00","15:00-16:30","16:30-18:00","19:00-20:30","20:30-22:00"];
+const SESSIONS = 5;
+
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('active', a.dataset.view===id));
+  window.scrollTo(0,0);
+}
+
+function buildPlanRow(rowId, options, placeholder, onchange){
+  const row = document.getElementById(rowId);
+  for(let i=0;i<SESSIONS;i++){
+    const sel = document.createElement('select');
+    sel.dataset.i = i;
+    sel.innerHTML = '<option value="">'+placeholder+'</option>' +
+      options.map(o=>'<option value="'+o+'">'+o+'</option>').join('');
+    if(onchange) sel.addEventListener('change', ()=>onchange(i, sel.value));
+    row.appendChild(sel);
+  }
+}
+
+function initPlan(){
+  buildPlanRow('row-time', TIMES, 'เวลา');
+  buildPlanRow('row-subject', Object.keys(SUBJECTS), 'วิชา', (i,val)=>{
+    const topicSel = document.querySelectorAll('#row-topic select')[i];
+    topicSel.disabled = !val;
+    topicSel.innerHTML = '<option value="">เรื่อง</option>' +
+      (SUBJECTS[val]||[]).map(t=>'<option value="'+t+'">'+t+'</option>').join('');
+  });
+  buildPlanRow('row-topic', [], 'เรื่อง');
+  document.querySelectorAll('#row-topic select').forEach(s=>s.disabled=true);
+
+  try{
+    const saved = JSON.parse(localStorage.getItem('unipath_plan')||'null');
+    if(saved){
+      saved.forEach((s,i)=>{
+        document.querySelectorAll('#row-time select')[i].value = s.time||'';
+        const subjSel = document.querySelectorAll('#row-subject select')[i];
+        subjSel.value = s.subject||'';
+        const topicSel = document.querySelectorAll('#row-topic select')[i];
+        if(s.subject){
+          topicSel.disabled=false;
+          topicSel.innerHTML = '<option value="">เรื่อง</option>' +
+            SUBJECTS[s.subject].map(t=>'<option value="'+t+'">'+t+'</option>').join('');
+        }
+        topicSel.value = s.topic||'';
+      });
+    }
+  }catch(e){}
+}
+
+function savePlan(){
+  const data=[];
+  for(let i=0;i<SESSIONS;i++){
+    data.push({
+      time: document.querySelectorAll('#row-time select')[i].value,
+      subject: document.querySelectorAll('#row-subject select')[i].value,
+      topic: document.querySelectorAll('#row-topic select')[i].value
+    });
+  }
+  try{ localStorage.setItem('unipath_plan', JSON.stringify(data)); }catch(e){}
+  const msg=document.getElementById('planSavedMsg');
+  msg.textContent='บันทึกแผนแล้ว ✓';
+  setTimeout(()=>msg.textContent='',2000);
+}
+
+const FY_CATEGORIES = [
+  {key:'tech', icon:'⚙️', title:'สายช่างและวิศวกรรม'},
+  {key:'health', icon:'🩺', title:'สายแพทย์และสุขภาพ'},
+  {key:'it', icon:'💻', title:'สายไอทีและคอมพิวเตอร์'}
+];
+const FY_QUESTIONS = [
+  {key:'young', label:'ตอนเด็กเราชอบอะไรที่เกี่ยวกับด้านนี้'},
+  {key:'now', label:'ตอนนี้เราชอบอะไรที่เกี่ยวกับด้านนี้'},
+  {key:'current', label:'ปัจจุบันเราทำอะไรที่เกี่ยวกับด้านนี้บ้าง'}
+];
+
+function initFindSelf(){
+  const grid = document.getElementById('fyGrid');
+  let saved = {};
+  try{ saved = JSON.parse(localStorage.getItem('unipath_findself')||'{}'); }catch(e){}
+  FY_CATEGORIES.forEach(cat=>{
+    const card = document.createElement('div');
+    card.className='fy-card';
+    let html = '<div class="fy-icon">'+cat.icon+'</div><h3>'+cat.title+'</h3>';
+    FY_QUESTIONS.forEach(q=>{
+      const val = (saved[cat.key]||{})[q.key] || '';
+      html += '<label>'+q.label+'</label><textarea data-cat="'+cat.key+'" data-q="'+q.key+'">'+val+'</textarea>';
+    });
+    card.innerHTML = html;
+    grid.appendChild(card);
+  });
+}
+
+function saveFindSelf(){
+  const data={};
+  document.querySelectorAll('#fyGrid textarea').forEach(t=>{
+    data[t.dataset.cat] = data[t.dataset.cat] || {};
+    data[t.dataset.cat][t.dataset.q] = t.value;
+  });
+  try{ localStorage.setItem('unipath_findself', JSON.stringify(data)); }catch(e){}
+  const msg=document.getElementById('fySavedMsg');
+  msg.textContent='บันทึกคำตอบแล้ว ✓';
+  setTimeout(()=>msg.textContent='',2000);
+}
+
+function loadAboutImg(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const label = document.getElementById('aboutImgLabel');
+    label.innerHTML = '<img src="'+e.target.result+'" alt="รูปคนสร้าง">' +
+      '<input type="file" accept="image/*" style="display:none" onchange="loadAboutImg(event)">';
+  };
+  reader.readAsDataURL(file);
+}
+
+initPlan();
+initFindSelf();
+</script>
+</body>
+</html>
